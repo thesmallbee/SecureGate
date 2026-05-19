@@ -1,8 +1,11 @@
 import "dotenv/config";
 import dotenv from "dotenv";
+import fs from "fs";
 import { defineConfig } from "prisma/config";
 
-dotenv.config({ path: ".env.local", override: true });
+if (fs.existsSync(".env.local")) {
+  dotenv.config({ path: ".env.local", override: true });
+}
 
 export default defineConfig({
   schema: "prisma/schema.prisma",

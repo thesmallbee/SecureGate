@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "postinstall": "npx prisma generate",
+    "vercel-build": "next build"
   },
   "dependencies": {
     "@prisma/adapter-neon": "^7.8.0",
