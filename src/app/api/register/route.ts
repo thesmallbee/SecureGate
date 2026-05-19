@@ -42,6 +42,8 @@ export async function POST(req: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.issues }, { status: 400 });
     }
-    return NextResponse.json({ error: "Something went wrong." }, { status: 500 });
+    console.error("Register error:", error);
+    const message = error instanceof Error ? error.message : "Something went wrong.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
