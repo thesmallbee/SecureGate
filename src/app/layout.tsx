@@ -10,6 +10,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "SecureGate",
   description: "Authentication system",
+  icons: [{ rel: "icon", url: "/icon.svg" }],
 };
 
 export default function RootLayout({
