@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { generatePasswordResetToken } from "@/lib/tokens";
 import { sendPasswordResetEmail } from "@/lib/mail";
 import { forgotPasswordRatelimit } from "@/lib/ratelimit";
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   }
 
   const { email } = parsed.data;
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await getPrisma().user.findUnique({ where: { email } });
 
   if (user) {
     const tokenRecord = await generatePasswordResetToken(email);

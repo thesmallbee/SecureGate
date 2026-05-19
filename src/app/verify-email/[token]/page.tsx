@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
@@ -9,7 +9,7 @@ export default async function VerifyEmailPage({
 }) {
   const { token } = await params;
 
-  const tokenRecord = await prisma.verificationToken.findUnique({
+  const tokenRecord = await getPrisma().verificationToken.findUnique({
     where: { token },
   });
 
@@ -40,7 +40,7 @@ export default async function VerifyEmailPage({
   }
 
   if (tokenRecord.expires < new Date()) {
-    await prisma.verificationToken.delete({ where: { token } });
+    await getPrisma().verificationToken.delete({ where: { token } });
 
     return (
       <div className="flex flex-1 items-center justify-center px-4">
@@ -68,12 +68,12 @@ export default async function VerifyEmailPage({
     );
   }
 
-  await prisma.user.update({
+  await getPrisma().user.update({
     where: { email: tokenRecord.identifier },
     data: { emailVerified: new Date() },
   });
 
-  await prisma.verificationToken.delete({ where: { token } });
+  await getPrisma().verificationToken.delete({ where: { token } });
 
   redirect("/login?verified=true");
 }
