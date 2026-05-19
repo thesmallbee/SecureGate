@@ -27,17 +27,17 @@ export async function POST(req: Request) {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword },
+      data: { name, email, password: hashedPassword, emailVerified: new Date() },
     });
 
     try {
       const tokenRecord = await generateVerificationToken(user.email);
       await sendVerificationEmail(user.email, tokenRecord.token);
     } catch {
-      // Email failure should not block account creation
+      // Email notification is optional — account is active without it
     }
 
-    return NextResponse.json({ message: "Account created. Check your email." });
+    return NextResponse.json({ message: "Account created successfully." });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.issues }, { status: 400 });

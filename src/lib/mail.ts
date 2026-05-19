@@ -8,12 +8,17 @@ function getResend() {
   return new Resend(apiKey);
 }
 
+function fromAddress() {
+  const domain = process.env.RESEND_DOMAIN;
+  return domain ? `SecureGate <no-reply@${domain}>` : "SecureGate <onboarding@resend.dev>";
+}
+
 export async function sendVerificationEmail(email: string, token: string) {
   const resend = getResend();
   const verifyUrl = `${process.env.NEXTAUTH_URL}/verify-email/${token}`;
 
   await resend.emails.send({
-    from: "SecureGate <no-reply@yourdomain.com>",
+    from: fromAddress(),
     to: email,
     subject: "Verify your SecureGate account",
     html: `
@@ -30,7 +35,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
   const resetUrl = `${process.env.NEXTAUTH_URL}/reset-password/${token}`;
 
   await resend.emails.send({
-    from: "SecureGate <no-reply@yourdomain.com>",
+    from: fromAddress(),
     to: email,
     subject: "Reset your SecureGate password",
     html: `
