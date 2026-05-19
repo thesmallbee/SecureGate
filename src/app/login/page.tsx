@@ -23,11 +23,18 @@ function LoginForm() {
     setError("");
     setLoading(true);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    let result;
+    try {
+      result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+    } catch {
+      setError("Connection error. Please try again.");
+      setLoading(false);
+      return;
+    }
 
     if (result?.error) {
       setError("Invalid email or password");
