@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Account created. Check your email." });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+      return NextResponse.json({ error: error.issues }, { status: 400 });
     }
     return NextResponse.json({ error: "Something went wrong." }, { status: 500 });
   }

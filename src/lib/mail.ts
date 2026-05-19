@@ -1,8 +1,15 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    throw new Error("RESEND_API_KEY is not configured");
+  }
+  return new Resend(apiKey);
+}
 
 export async function sendVerificationEmail(email: string, token: string) {
+  const resend = getResend();
   const verifyUrl = `${process.env.NEXTAUTH_URL}/verify-email/${token}`;
 
   await resend.emails.send({
@@ -19,6 +26,7 @@ export async function sendVerificationEmail(email: string, token: string) {
 }
 
 export async function sendPasswordResetEmail(email: string, token: string) {
+  const resend = getResend();
   const resetUrl = `${process.env.NEXTAUTH_URL}/reset-password/${token}`;
 
   await resend.emails.send({
