@@ -11,6 +11,7 @@ function LoginForm() {
   const verified = searchParams.get("verified");
   const registered = searchParams.get("registered");
   const reset = searchParams.get("reset");
+  const errorParam = searchParams.get("error");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,26 +24,14 @@ function LoginForm() {
     setError("");
     setLoading(true);
 
-    let result;
-    try {
-      result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-    } catch {
-      setError("Connection error. Please try again.");
-      setLoading(false);
-      return;
-    }
+    const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
-    if (result?.error) {
-      setError("Invalid email or password");
-      setLoading(false);
-      return;
-    }
-
-    router.push("/dashboard");
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: true,
+      callbackUrl,
+    });
   }
 
   return (
@@ -113,8 +102,10 @@ function LoginForm() {
           </div>
         </div>
 
-        {error && (
-          <p className="text-[13px] font-medium text-[#FF4D4D]">{error}</p>
+        {(error || errorParam) && (
+          <p className="text-[13px] font-medium text-[#FF4D4D]">
+            {error || "Invalid email or password"}
+          </p>
         )}
 
         <button
