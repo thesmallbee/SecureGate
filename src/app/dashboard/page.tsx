@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import Link from "next/link";
+import SignOutButton from "@/components/SignOutButton";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -23,20 +23,12 @@ export default async function DashboardPage() {
             padding: "32px",
           }}
         >
-          <div className="flex items-center justify-between">
-            <h1
-              className="text-[32px] font-semibold leading-[1.2]"
-              style={{ color: "#D8FF5A" }}
-            >
-              Dashboard
-            </h1>
-            <Link
-              href="/api/auth/signout"
-              className="flex h-[44px] items-center justify-center rounded-[14px] border border-[rgba(255,77,77,0.18)] bg-[rgba(255,77,77,0.12)] px-5 text-[14px] font-medium text-[#FF4D4D] transition-all hover:bg-[rgba(255,77,77,0.2)]"
-            >
-              Sign Out
-            </Link>
-          </div>
+          <h1
+            className="text-[32px] font-semibold leading-[1.2]"
+            style={{ color: "#D8FF5A" }}
+          >
+            Dashboard
+          </h1>
           <div className="space-y-3 text-[15px] leading-[1.6] text-[#A0A0A0]">
             <p>
               Welcome,{" "}
@@ -51,6 +43,7 @@ export default async function DashboardPage() {
               <span style={{ color: "#00FF84" }}>Authenticated</span>
             </p>
           </div>
+          <SignOutButton />
         </div>
       </div>
     </div>
