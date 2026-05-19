@@ -9,7 +9,7 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const user = session.user as { name?: string; email?: string };
+  const user = session.user;
 
   return (
     <div className="flex flex-1 items-center justify-center px-4">

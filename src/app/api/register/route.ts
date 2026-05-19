@@ -30,8 +30,12 @@ export async function POST(req: Request) {
       data: { name, email, password: hashedPassword },
     });
 
-    const tokenRecord = await generateVerificationToken(user.email);
-    await sendVerificationEmail(user.email, tokenRecord.token);
+    try {
+      const tokenRecord = await generateVerificationToken(user.email);
+      await sendVerificationEmail(user.email, tokenRecord.token);
+    } catch {
+      // Email failure should not block account creation
+    }
 
     return NextResponse.json({ message: "Account created. Check your email." });
   } catch (error) {
